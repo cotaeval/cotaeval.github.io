@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications">
+  <meta name="keywords" content="AI Safety, Model Alignment, Jailbreak">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/tifa.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BLEVG737MK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-BLEVG737MK');
+  </script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFCT45H" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+  
+
+      <div class="navbar-item is-hoverable">
+        <a class="navbar-item" href="#overview">
+          Overview
+        </a>
+        <a class="navbar-item" href="#motivation">
+          Motivation
+        </a>
+          <a class="navbar-item" href="#methods">
+            Methods
+          </a>
+          <a class="navbar-item" href="#sparse">
+            Sparsity Analysis
+          </a>
+          <a class="navbar-item" href="#overlap">
+            Overlapping Analysis
+          </a>
+          <a class="navbar-item" href="#attack">
+            FT-attack Results
+          </a>
+          <a class="navbar-item" href="#acknowledgement">
+            Broader Impact and Acknowledgement
+          </a>
+          
+          <a class="navbar-item" href="#reference">
+            BibTeX
+          </a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Assessing the Brittleness of Safety Alignment<br>via Pruning and Low-Rank Modifications</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://boyiwei.com">Boyi Wei<sup>*</sup></a>,
+            </span>
+            <span class="author-block">
+              <a href="https://hackyhuang.github.io">Kaixuan Huang<sup>*</sup></a>,
+            </span>
+            <span class="author-block">
+              <a href="https://hazelsuko07.github.io/yangsibo/">Yangsibo Huang<sup>*</sup></a>,
+            </span>
+            <br>
+            <span class="author-block">
+              <a href="https://tinghaoxie.com">Tinghao Xie</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://unispac.github.io">Xiangyu Qi</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://xiamengzhou.github.io">Mengzhou Xia</a>,
+            </span>
+            <br>
+            <span class="author-block">
+              <a href="https://www.princeton.edu/~pmittal/">Prateek Mittal</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://mwang.princeton.edu">Mengdi Wang</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.peterhenderson.co">Peter Henderson</a>
+            </span>
+
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Princeton University</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup>*</sup>Equal contribution</span>
+          </div>
+          
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2402.05162"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/boyiwei/alignment-attribution-code"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>        
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+
+
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="overview">Overview</h2>
+      <div class="content has-text-justified">
+
+        <p> Large language models (LLMs) show inherent brittleness in their safety mechanisms,  as evidenced by their susceptibility to jailbreaking and even non-malicious fine-tuning. In this study, we explore this brittleness of safety alignment by leveraging pruning and low-rank modifications.
+          <ul>
+            <li><span class="fontGrad-bg"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
+            <li>Surprisingly, the isolated regions we find are sparse, comprising about <span class="fontGrad-bg"><b>3% at the parameter level</b></span> and <span class="fontGrad-bg"><b>2.5% at the rank level</b></span>. Removing these regions compromises safety without significantly impacting utility, corroborating the inherent brittleness of the model's safety mechanisms.</li>
+            <li>We show that the model <span class="fontGrad-bg"><b>remains vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
+
+          </ul>
+           
+        </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- </section> -->
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="motivation">Motivation</h2>
+      <div class="content has-text-justified">
+          <p>
+            Addressing failure cases in the alignment of LLMs requires a deep understanding of why their safety mechanisms are fragile. Our study aims to contribute to this understanding via <span style="font-style: italic;">weight attribution</span> --- the process of linking safe behaviors to specific regions within the model's weights.
+            However, a key challenge here is the intricate overlap between <span style="font-style: italic;">safety</span> mechanisms and the model's general capabilities, or <span style="font-style: italic;">utility</span>. 
+            For instance, responsibly handling a harmful instruction for illegal actions entails understanding the instruction, recognizing its harmful intent, and declining it appropriately, which requires a blend of safety awareness and utility capability. We aim to identify minimal safety-critical links within the model that, if disrupted, could compromise its safety without significantly
+            impacting its utility. If there are few such links, it may help explain why safety mechanisms remain
+            brittle and why low-cost fine-tuning attacks have been so successful.
+          </p>
+        </div>
+      </div>
+  </div>
+</section>
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="methods">Methods: Isolating Safety-Important and Utility-Important Regions from Two Perspectives</h2>
+      <div class="content has-text-justified">
+          <p>
+            We propose two ways of isolating safety-critical region from utility-critical region:
+            <ul>
+              <li><b>On neuron level</b> (Figure (a) below)</li>
+                  <ul>
+                  <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
+                  <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
+                  </ul>
+              <li><b>On rank level</b> (Figure (b) below)
+                <ul>
+                  <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\), get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
+                  <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+                </ul>
+            </ul>
+          </p>
+        </div>
+        <img src="./static/images/main.png" alt="pipeline">     
+      </div>
+  </div>
+</section>
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="sparse">Safety-Critical Region is <span class="fontGrad-bg">Sparse</span>.<br> Removing the Isolated Safety-Critical Region Destroys Model's Safety while Preserving its Utility</h2>
+      <div class="content has-text-justified">
+          <figure>
+            <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="300"></iframe>
+            <figcaption>(a) Neuron Level</figcaption>
+            <iframe src="./static/images/low_rank_diff_7b.html" width="100%" height="300"></iframe>
+            <figcaption>(b) Rank Level</figcaption>
+            <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
+          </figure>
+          <p>
+          The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: 
+          <dl>
+            <dt>(a). Different pruning methods in neuron level with <b><span class="fontGrad-bg">constraint 3%</span></b>.</dt>
+            <dt>(b). Different methods in low rank modifications with <b><span class="fontGrad-bg">rank of the weight updates</span> \(\mathrm{rank} (\Delta W)\) <span class="fontGrad-bg">less than 100 (out of 4096)</span></b>.</dt>
+          </dl>
+          Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
+          </p>
+        </div>
+      </div>
+  </div>
+</section>
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="overlap">Safety and Utility Behaviors are More <span class="fontGrad-bg">Differentiated</span> in MLP Layers </h2> 
+      
+      <div class="content has-text-justified">
+          <p>
+            Methods in computing the overlap between safety-critical region and utility-critical region:
+          <ul>
+            <li>  <b>On neuron level</b></li>
+              <ul>
+                <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
+                <li>Compute the Jaccard index \(J=|A\cap B|/|A\cup B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. (Top 5% in Figure (a) below) </li>
+              </ul>
+            <li> <b>On rank level</b></li>
+            <ul>
+              <li>Use ActSVD to identify \(\mathrm{rank}\)-\(r\) \(U^u, U^s\) (Rank-100 in the Figure (b) below.)</li>
+              <li>Compute the subspace similarity mentioned in Section 4.3</li>
+            </ul> 
+          </ul>
+          </p>
+            <figure>
+            <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
+            -->
+            <iframe src="./static/images/jaccard_index_wandg_0.05_barplot.html" width="100%" height="350"></iframe>
+            <figcaption>(a) Neuron Level</figcaption>
+            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="350"></iframe>
+            <figcaption>(b) Rank Level</figcaption>
+            <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
+          </figure>
+          <p>
+            The observed spikes in Jaccard indices and subspace similarities indicate that safety and utility behaviors are more differentiated in MLP layers.
+          </p>
+        </div>
+      </div>
+  </div>
+</section>
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="attack">Freezing Safety-Critical Neurons Does <span class="fontGrad-bg">Not</span> Stop Fine-Tuning Attack</h2>
+      <div class="content has-text-justified">
+          <p>
+            We explore whether the identified safety-critical neurons could mitigate the fine-tuning attack.
+            Following <a href="https://arxiv.org/pdf/2310.03693.pdf">Qi et al.</a>'s experimental setup, we fine-tune LLaMA2-7B-chat-hf with varying numbers of examples \(n\) from the Alpaca dataset. During fine-tuning, we freeze the top-\(q\%\) of safety neurons and observe their effect on preserving safety. 
+          </p>
+          <p>
+            We find that effective counteraction of the attack occurs only with \(n=10\) and freezing over 50% of neurons.  
+            This observation aligns with <a href="https://arxiv.org/pdf/2401.01967.pdf">Lee et al.</a>'s hypothesis that fine-tuning attacks may create alternative pathways in the original model. 
+            Given that safety-critical neurons are sparse, these new routes could bypass the existing safety mechanisms easily, and therefore <span class="fontGrad-bg">we need more robust defenses against fine-tuning attacks</span>.
+          </p>
+        </div>
+      </div>
+  </div>
+</section>
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="acknowledgement">Broader Impact and Acknowledgement</h2>
+      
+      <div class="content has-text-justified">
+        <p>
+          <b>Dual-use Risk.</b> Our study aims to improve model safety by identifying vulnerabilities, with the goal of encouraging stronger safety mechanisms. Despite potential misuse of our findings, we see more benefit than risk.
+           Our tests are based on Llama2-chat models, which already have base models without built-in safety features, so there is no marginal increased risk. We highlight safety weaknesses to prompt the development of tougher guardrails. Our work doesn't simplify jailbreaking more than current methods but seeks to better understand and strengthen safety features. Our ultimate aim is to enhance AI safety in open models through thorough analysis.
+        </p>
+        <p>
+          <b>Safety and harm definitions.</b> Our research adheres to standard benchmarks for assessing safety and harm, though these may not encompass all definitions. We recommend further studies to broaden analysis into more settings and explore definitions and evaluations beyond our current scope.
+          </p>
+          <p>
+            We express our gratitude to Vikash Sehwag, Chiyuan Zhang, Yi Zeng, Ruoxi Jia, Lucy He, Kaifeng Lyu, and the Princeton LLM Alignment reading group for providing helpful feedback. Boyi Wei and Tinghao Xie are supported by 	
+the Francis Robbins Upton Fellowship, Yangsibo Huang is supported by the Wallace Memorial Fellowship, and Xiangyu Qi is supported by Gordon Y. S. Wu Fellowship. This research is also supported by the Center for AI Safety Compute Cluster. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors. 
+          </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered has-text-centered">
+      <h2 class="title is-3", id="reference">BibTeX</h2>
+      
+      <div class="content has-text-justified">
+    <p>If you find our code and paper helpful, please consider citing our work:
+    </p>
+    <pre><code>
+@article{wei2024assessing,
+  title={Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications},
+  author={Wei, Boyi and Huang, Kaixuan and Huang, Yangsibo and Xie, Tinghao and Qi, Xiangyu and Xia, Mengzhou and Mittal, Prateek and Wang, Mengdi and Henderson, Peter},
+  journal={arXiv preprint arXiv:2402.05162},
+  year={2024}
+}
+</code></pre>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            We base the design of this website on <a href="https://nerfies.github.io/">https://nerfies.github.io</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
