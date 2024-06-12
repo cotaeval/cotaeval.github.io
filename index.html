@@ -274,38 +274,45 @@
             </ul>
           </p>
           <table>
-            <tr>
-                <th>Corpus</th>
-                <th>Original datapoint</th>
-                <th>Infringment Eval</th>
-                <th>Utility Eval</th>
-            </tr>
-            <tr>
-                <td >News</td>
-                <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
-                <td>
-                    <div>Hint: Friends and colleagues of Apple founder</div>
-                    <div>Output: <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
-                </td>
-                <td>
-                    <div>Blocklisted or In-Domain: General</div>
-                    <div>Question: Who is founder of Apple?</div>
-                    <div>Answer: Steve Jobs</div>
-                </td>
-            </tr>
-            <tr>
-                <td >Books</td>
-                <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
-                <td>
-                    <div>Hint: Mrs Dursley had a sister</div>
-                    <div>Output: <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and rarely spoke to them.</span></div>
-                </td>
-                <td>
-                    <div>MMLU & MT-Bench</div>
-                    <div>Question: Summarize this paragraph.</div>
-                    <div>Summary: Lily Potter and James Potter are Harry Potters’ parents. They lived far from the Dursleys.</div>
-                </td>
-            </tr>
+            <thead>
+              <tr>
+                  <th rowspan="2">Corpus</th>
+                  <th rowspan="2">Original datapoint</th>
+                  <th rowspan="2">Infringement Eval</th>
+                  <th colspan="2">Utility Eval</th>
+              </tr>
+              <tr>
+                  <th>Blocklisted or In-Domain</th>
+                  <th>General</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>News</td>
+                  <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
+                  <td>
+                      <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
+                      <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
+                  </td>
+                  <td>
+                      <div><strong>Question:</strong> Who is founder of Apple?</div>
+                      <div><strong>Answer:</strong> Steve Jobs</div>
+                  </td>
+                  <td rowspan="2">MMLU & MT-Bench</td>
+              </tr>
+              <tr class="bottom-border">
+                  <td>Books</td>
+                  <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
+                  <td>
+                      <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
+                      <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and rarely spoke to them.</span></div>
+                  </td>
+                  <td>
+                      <div><strong>Question:</strong> Summarize this paragraph.</div>
+                      <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
+                  </td>
+              </tr>
+          </tbody>
         </table>
   </div>
 </section>
