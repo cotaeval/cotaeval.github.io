@@ -265,8 +265,8 @@
             <ul>
               <li><b>Infringement Risk Evaluation</b></li>
                   <ul>
-                  <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
-                  <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
+                  <li>For <i>exact match</i> infringement, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
+                  <li>For <i>near duplicate</i> infringement, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\), and MinHash Similarity \(\xi_{\mathsf{MH}}\). </li>
                   </ul>
               <li><b>Utility Evaluation</b>
                 <ul>
@@ -312,7 +312,7 @@
                   <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
                   <td>
                       <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
-                      <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and rarely spoke to them.</span></div>
+                      <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
                   </td>
                   <td>
                       <div><strong>Question:</strong> Summarize this paragraph.</div>
@@ -334,9 +334,9 @@
       <h2 class="title is-3", id="sparse">Experiments</h2>
       <div class="content has-text-justified">
           <figure>
-            <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="300"></iframe>
+            <iframe src="./static/images/violin_plot_rag.html" width="100%" height="400"></iframe>
             <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/low_rank_diff_7b.html" width="100%" height="300"></iframe>
+            <iframe src="./static/images/violin_plot_mem.html" width="100%" height="400"></iframe>
             <figcaption>(b) Rank Level</figcaption>
             <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
           </figure>
