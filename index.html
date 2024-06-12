@@ -5,10 +5,10 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <meta charset="utf-8">
   <meta name="description"
-        content="Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications">
+        content="Evaluating Copyright Takedown Methods for Language Models">
   <meta name="keywords" content="AI Safety, Model Alignment, Jailbreak">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications</title>
+  <title>Evaluating Copyright Takedown Methods for Language Models</title>
 
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
@@ -29,6 +29,26 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Example</title>
+  <style>
+      table {
+          width: 100%;
+          border-collapse: collapse;
+      }
+      th, td {
+          border: 1px solid black;
+          padding: 8px;
+          text-align: left;
+      }
+      th {
+          background-color: #f2f2f2;
+      }
+      .highlight {
+          background-color: #d9fdd3;
+      }
+  </style>
 </head>
 <body>
   <!-- Google tag (gtag.js) -->
@@ -116,7 +136,6 @@
             <span class="author-block">
               <a href="https://www.peterhenderson.co">Peter Henderson<sup>1</sup></a>
             </span>
-
           </div>
 
           <div class="is-size-5 publication-authors">
@@ -192,15 +211,20 @@
       <h2 class="title is-3", id="overview">Overview</h2>
       <div class="content has-text-justified">
 
-        <p> Large language models (LLMs) show inherent brittleness in their safety mechanisms,  as evidenced by their susceptibility to jailbreaking and even non-malicious fine-tuning. In this study, we explore this brittleness of safety alignment by leveraging pruning and low-rank modifications.
+        <p> Language models (LMs) derive their capabilities from extensive training on diverse data, including copyrighted material. 
+          These models can memorize and generate content similar to their training data, potentially risking legal issues like copyright infringement. Therefore, model creators are motivated to develop mitigation methods that prevent generating particular copyrighted content, an ability we refer to as <span style="font-style: italic;" >copyright takedowns</span>. 
+          However, there's lack of evaluation feasibility and side effects of these methods. In this project, we make the following key contributions:
           <ul>
-            <li><span class="fontGrad-bg"><b>We develop methods to identify critical regions that are vital for safety guardrails</b></span>, and that are disentangled from utility-relevant regions at both the neuron and rank levels.</li>
-            <li>Surprisingly, the isolated regions we find are sparse, comprising about <span class="fontGrad-bg"><b>3% at the parameter level</b></span> and <span class="fontGrad-bg"><b>2.5% at the rank level</b></span>. Removing these regions compromises safety without significantly impacting utility, corroborating the inherent brittleness of the model's safety mechanisms.</li>
-            <li>We show that the model <span class="fontGrad-bg"><b>remains vulnerable to low-cost fine-tuning attacks even when modifications to the safety-critical regions are restricted</b></span> . These findings underscore the urgent need for more robust safety strategies in LLMs.</li>
+            <li><span class="fontGrad-bg"><b>A taxonomy of infringement causes and takedown methods.</b></span> We identify two primary causes of infringement: <b>memorization</b> and <b>retrieval augmentation (RAG)</b>; and compile a taxonomy of takedown methods, including <b>generic prevention</b>, <b>decoding-time interventions</b>, and <b>training-based intervensions.</b></li>
+            <li><span class="fontGrad-bg"><b>An evaluation suite.</b></span> We introduce <b>CoTaEval</b>, the first benchmark to evaluate the feasibility and side effects of takedown methods.</li>
+            <li><span class="fontGrad-bg"><b>An evaluation of takedown methods and implications.</b></span> We evaluate the performace on various takedown methods, and find no method excel across all metrics, showing sinificant room for research in this unique problem setting and indicating potential unresolved challenges for live policy proposals.</li>
 
           </ul>
            
         </p>
+        </div>
+        <img src="./static/images/main.png" alt="pipeline">     
+        </div>
         </div>
       </div>
     </div>
@@ -211,14 +235,12 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="motivation">Motivation</h2>
+      <h2 class="title is-3", id="motivation">Copyright Infringement in Language Models: Causes and Takedowns</h2>
       <div class="content has-text-justified">
           <p>
-            Addressing failure cases in the alignment of LLMs requires a deep understanding of why their safety mechanisms are fragile. Our study aims to contribute to this understanding via <span style="font-style: italic;">weight attribution</span> --- the process of linking safe behaviors to specific regions within the model's weights.
-            However, a key challenge here is the intricate overlap between <span style="font-style: italic;">safety</span> mechanisms and the model's general capabilities, or <span style="font-style: italic;">utility</span>. 
-            For instance, responsibly handling a harmful instruction for illegal actions entails understanding the instruction, recognizing its harmful intent, and declining it appropriately, which requires a blend of safety awareness and utility capability. We aim to identify minimal safety-critical links within the model that, if disrupted, could compromise its safety without significantly
-            impacting its utility. If there are few such links, it may help explain why safety mechanisms remain
-            brittle and why low-cost fine-tuning attacks have been so successful.
+            <h4 class="title is-4", id="motivation">Causes</h4>
+            <h4 class="title is-4", id="motivation">Takedown methods</h4>
+
           </p>
         </div>
       </div>
@@ -229,26 +251,62 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="methods">Methods: Isolating Safety-Important and Utility-Important Regions from Two Perspectives</h2>
+      <h2 class="title is-3", id="methods">The CoTaEval Evaluation Pipeline</h2>
       <div class="content has-text-justified">
           <p>
-            We propose two ways of isolating safety-critical region from utility-critical region:
+            CoTaEval evalautes the takedown methods from three perspectives:
             <ul>
-              <li><b>On neuron level</b> (Figure (a) below)</li>
+              <li><b>Infringement Risk Evaluation</b></li>
                   <ul>
                   <li>Compute the importance score for each neuron using Wanda (<a href="https://arxiv.org/pdf/2306.11695.pdf">Sun et al.</a>) and SNIP (<a href="https://arxiv.org/pdf/1810.02340.pdf">Lee et al.</a>) on the safety dataset and the utility dataset. 
                   <li>Isolate the safety-critical neurons from the utility neurons using set difference between top-\(p\%\)-scored utility neurons and top-\(q\%\)-scored safety neurons: \(S(p,q) =  S^s(q) - S^u(p)\)</li>
                   </ul>
-              <li><b>On rank level</b> (Figure (b) below)
+              <li><b>Utility Evaluation</b>
+                <ul>
+                  <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\), get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
+                  <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+                </ul>
+              <li><b>Efficiency Evaluation</b>
                 <ul>
                   <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\), get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
                   <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
                 </ul>
             </ul>
           </p>
-        </div>
-        <img src="./static/images/main.png" alt="pipeline">     
-      </div>
+          <table>
+            <tr>
+                <th>Corpus</th>
+                <th>Original datapoint</th>
+                <th>Infringment Eval</th>
+                <th>Utility Eval</th>
+            </tr>
+            <tr>
+                <td >News</td>
+                <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
+                <td>
+                    <div>Hint: Friends and colleagues of Apple founder</div>
+                    <div>Output: <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
+                </td>
+                <td>
+                    <div>Blocklisted or In-Domain: General</div>
+                    <div>Question: Who is founder of Apple?</div>
+                    <div>Answer: Steve Jobs</div>
+                </td>
+            </tr>
+            <tr>
+                <td >Books</td>
+                <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
+                <td>
+                    <div>Hint: Mrs Dursley had a sister</div>
+                    <div>Output: <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and rarely spoke to them.</span></div>
+                </td>
+                <td>
+                    <div>MMLU & MT-Bench</div>
+                    <div>Question: Summarize this paragraph.</div>
+                    <div>Summary: Lily Potter and James Potter are Harry Potters’ parents. They lived far from the Dursleys.</div>
+                </td>
+            </tr>
+        </table>
   </div>
 </section>
 
@@ -256,7 +314,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="sparse">Safety-Critical Region is <span class="fontGrad-bg">Sparse</span>.<br> Removing the Isolated Safety-Critical Region Destroys Model's Safety while Preserving its Utility</h2>
+      <h2 class="title is-3", id="sparse">Experiments</h2>
       <div class="content has-text-justified">
           <figure>
             <iframe src="./static/images/ASR_vs_acc_7b.html" width="100%" height="300"></iframe>
@@ -279,64 +337,6 @@
 </section>
 
 
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="overlap">Safety and Utility Behaviors are More <span class="fontGrad-bg">Differentiated</span> in MLP Layers </h2> 
-      
-      <div class="content has-text-justified">
-          <p>
-            Methods in computing the overlap between safety-critical region and utility-critical region:
-          <ul>
-            <li>  <b>On neuron level</b></li>
-              <ul>
-                <li>Compute the importance score for each neuron using Wanda and SNIP on the safety dataset and the utility dataset. 
-                <li>Compute the Jaccard index \(J=|A\cap B|/|A\cup B|\) between top-\(p\%\) scored utility neurons and top-\(p\%\) scored safety neurons. (Top 5% in Figure (a) below) </li>
-              </ul>
-            <li> <b>On rank level</b></li>
-            <ul>
-              <li>Use ActSVD to identify \(\mathrm{rank}\)-\(r\) \(U^u, U^s\) (Rank-100 in the Figure (b) below.)</li>
-              <li>Compute the subspace similarity mentioned in Section 4.3</li>
-            </ul> 
-          </ul>
-          </p>
-            <figure>
-            <!-- <img src="./static/images/jaccard_index_wandg_0.01_barplot.png" alt="neuron_result">
-            -->
-            <iframe src="./static/images/jaccard_index_wandg_0.05_barplot.html" width="100%" height="350"></iframe>
-            <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/subspace_similarity_100.html" width="100%" height="350"></iframe>
-            <figcaption>(b) Rank Level</figcaption>
-            <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
-          </figure>
-          <p>
-            The observed spikes in Jaccard indices and subspace similarities indicate that safety and utility behaviors are more differentiated in MLP layers.
-          </p>
-        </div>
-      </div>
-  </div>
-</section>
-
-
-
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="attack">Freezing Safety-Critical Neurons Does <span class="fontGrad-bg">Not</span> Stop Fine-Tuning Attack</h2>
-      <div class="content has-text-justified">
-          <p>
-            We explore whether the identified safety-critical neurons could mitigate the fine-tuning attack.
-            Following <a href="https://arxiv.org/pdf/2310.03693.pdf">Qi et al.</a>'s experimental setup, we fine-tune LLaMA2-7B-chat-hf with varying numbers of examples \(n\) from the Alpaca dataset. During fine-tuning, we freeze the top-\(q\%\) of safety neurons and observe their effect on preserving safety. 
-          </p>
-          <p>
-            We find that effective counteraction of the attack occurs only with \(n=10\) and freezing over 50% of neurons.  
-            This observation aligns with <a href="https://arxiv.org/pdf/2401.01967.pdf">Lee et al.</a>'s hypothesis that fine-tuning attacks may create alternative pathways in the original model. 
-            Given that safety-critical neurons are sparse, these new routes could bypass the existing safety mechanisms easily, and therefore <span class="fontGrad-bg">we need more robust defenses against fine-tuning attacks</span>.
-          </p>
-        </div>
-      </div>
-  </div>
-</section>
 
 
 <section class="hero is-small">
