@@ -246,7 +246,19 @@
       <div class="content has-text-justified">
           <p>
             <h4 class="title is-4", id="motivation">Causes</h4>
+            Recent litigation (<a href="https://casetext.com/case/tremblay-v-openai-inc-2">Tremblay v. OpenAI, Inc</a>, <a href="https://casetext.com/case/kadrey-v-meta-platforms-inc">Kadrey v. Meta Platforms, Inc.</a>, <a href="https://www.courtlistener.com/docket/67778017/chabon-v-openai-inc/">Chabon v. OpenAI, Inc.</a>, <a href="https://www.courtlistener.com/docket/65669506/doe-1-v-github-inc/">DOE 1 v. GitHub, Inc.</a>) has pointed to two scenarios where a language model deployment might lead to infringement: 
+            <ul>
+              <li>Copyrighted content is memorized within the model's parameters during training (<i>Memorization</i>),
+              <li>Copyrighted content is incorporated as additional context during retrieval-augmented generation (<i>RAG</i>).</li> 
+            </ul>
             <h4 class="title is-4", id="motivation">Takedown methods</h4>
+            Our evaluation considers three types of takedown methods that intervene at different stages of the language model:
+            <ul>
+              <li>Strategies that generally try to prevent infringement without specifying a blocklist, including system prompt and top-\(k\) perturbation (Adding Gaussian noise to the logits in top-\(k\) sampling);</li>
+              <li>Methods that prevent the generation of blocklisted content during decoding, including MemFree (<a href="https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/642948/2/2023.inlg-main.3.pdf">Ippolito et al., 2023</a>), Reversed Context Aware Decoding (R-CAD; <a href="https://arxiv.org/pdf/2305.14739">Shi et al., 2023</a>);</li>
+              <li>Training-based interventions like unlearning, including Gradient Ascent (<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9797378&casa_token=sPm5CiNuBTQAAAAA:ORsczWa5cfRS2V-jt7eszNxl6Xu9Y9kVKKbPP3I6BU-8LY3CAAAGpL5ZbMhzxKSikC2MXAU">Thudi et al., 2022</a>), Gradient Difference(<a href="https://proceedings.mlr.press/v199/liu22a/liu22a.pdf">Liu et al., 2022</a>), KL minimization(<a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Golatkar_Eternal_Sunshine_of_the_Spotless_Net_Selective_Forgetting_in_Deep_CVPR_2020_paper.pdf">Golatkar et al., 2020</a>),
+              and Preference Optimization (<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/a85b405ed65c6477a4fe8302b5e06ce7-Paper-Conference.pdf">Rafailov et al., 2024</a>).</li>
+            </ul>
 
           </p>
         </div>
@@ -261,22 +273,21 @@
       <h2 class="title is-3", id="methods">The CoTaEval Evaluation Pipeline</h2>
       <div class="content has-text-justified">
           <p>
-            CoTaEval evalautes the takedown methods from three perspectives:
+            Our evaluation focuses on two prevalent types of text often involved in copyright infringement cases: <i>news articles</i> and <i>books</i>. We divide the evaluation corpus into two parts: blocklisted content \(\mathcal{D}_{\text{blocklisted}}\), which the model should avoid generating, and in-domain content \(\mathcal{D}_{\text{in-domain}}\), which is from the same domain as \(\mathcal{D}_{\text{blocklisted}}\) but not subject to takedown requests. CoTaEval evalautes the takedown methods from three perspectives:
             <ul>
               <li><b>Infringement Risk Evaluation</b></li>
                   <ul>
                   <li>For <i>exact match</i> infringement, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
-                  <li>For <i>near duplicate</i> infringement, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\), and MinHash Similarity \(\xi_{\mathsf{MH}}\). </li>
+                  <li>For <i>near duplicate</i> infringement, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
                   </ul>
               <li><b>Utility Evaluation</b>
                 <ul>
-                  <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\), get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
-                  <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+                  <li>For <i>blocklisted utility and in-domain utility</i>, we compute word level F1 score between the generated content and answer for QA tasks in news articles, and compute ROUGE score between the generated content and ground truth for summarization taks in books.</li>
+                  <li>For <i>general utility</i>, we use MT-Bench(<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf">Zheng et al., 2024</a>) and MMLU(<a href="https://arxiv.org/pdf/2009.03300">Hendrycks et al., 2021</a>), two widely adopted benchmarks that evaluate the model's knowledge and reasoning abilities across a diverse range of subjects and tasks. </li>
                 </ul>
               <li><b>Efficiency Evaluation</b>
                 <ul>
-                  <li>Perform SVD on the safety outputs and the utility outputs to approximate the weight matrix in low rank space (termed as ActSVD): \(U S V^\top  \approx WX_{\mathrm{in}}\), get the projection matrix \(\Pi^u=U^uU^{u\top}, \Pi^s=U^sU^{s\top}\)</li>
-                  <li>Remove the matrix \(\Delta W(r^u, r^s) = (I-\Pi^u)  \Pi^s  W\), which essentially removes the important ranks of the safety behavior that are <b>orthogonal</b> to the important ranks of the utility behavior. </li>
+                  <li>We configure the model to generate 200 tokens and measure efficiency in terms of tokens per second. Using the value from the vanilla case as our baseline, we report the relative speed of each method by dividing its tokens per second by the tokens per second of the vanilla method.</li>
                 </ul>
             </ul>
           </p>
@@ -295,7 +306,7 @@
           </thead>
           <tbody>
               <tr>
-                  <td>News</td>
+                  <td><b>News</b></td>
                   <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
                   <td>
                       <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
@@ -305,10 +316,10 @@
                       <div><strong>Question:</strong> Who is founder of Apple?</div>
                       <div><strong>Answer:</strong> Steve Jobs</div>
                   </td>
-                  <td rowspan="2">MMLU & MT-Bench</td>
+                  <td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
               </tr>
               <tr >
-                  <td>Books</td>
+                  <td><b>Books</b></td>
                   <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
                   <td>
                       <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
@@ -334,10 +345,10 @@
       <h2 class="title is-3", id="sparse">Experiments</h2>
       <div class="content has-text-justified">
           <figure>
-            <iframe src="./static/images/violin_plot_rag.html" width="100%" height="400"></iframe>
-            <figcaption>(a) Neuron Level</figcaption>
-            <iframe src="./static/images/violin_plot_mem.html" width="100%" height="400"></iframe>
-            <figcaption>(b) Rank Level</figcaption>
+            <iframe src="./static/images/violin_plot_rag.html" width="100%" height="370"></iframe>
+            <figcaption>(a) RAG setting</figcaption>
+            <iframe src="./static/images/violin_plot_mem.html" width="100%" height="370"></iframe>
+            <figcaption>(b) Memorization Setting</figcaption>
             <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
           </figure>
           <p>
