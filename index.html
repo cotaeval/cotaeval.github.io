@@ -254,7 +254,7 @@
             <h4 class="title is-4", id="motivation">Takedown methods</h4>
             Our evaluation considers three types of takedown methods that intervene at different stages of the language model:
             <ul>
-              <li>Strategies that generally try to prevent infringement without specifying a blocklist, including system prompt and top-\(k\) perturbation (Adding Gaussian noise to the logits in top-\(k\) sampling);</li>
+              <li>Strategies that generally try to prevent infringement without specifying a blocklist, including System Prompt and Top-\(k\) Perturbation (Adding Gaussian noise to the logits in top-\(k\) sampling);</li>
               <li>Methods that prevent the generation of blocklisted content during decoding, including MemFree (<a href="https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/642948/2/2023.inlg-main.3.pdf">Ippolito et al., 2023</a>), Reversed Context Aware Decoding (R-CAD; <a href="https://arxiv.org/pdf/2305.14739">Shi et al., 2023</a>);</li>
               <li>Training-based interventions like unlearning, including Gradient Ascent (<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9797378&casa_token=sPm5CiNuBTQAAAAA:ORsczWa5cfRS2V-jt7eszNxl6Xu9Y9kVKKbPP3I6BU-8LY3CAAAGpL5ZbMhzxKSikC2MXAU">Thudi et al., 2022</a>), Gradient Difference(<a href="https://proceedings.mlr.press/v199/liu22a/liu22a.pdf">Liu et al., 2022</a>), KL minimization(<a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Golatkar_Eternal_Sunshine_of_the_Spotless_Net_Selective_Forgetting_in_Deep_CVPR_2020_paper.pdf">Golatkar et al., 2020</a>),
               and Preference Optimization (<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/a85b405ed65c6477a4fe8302b5e06ce7-Paper-Conference.pdf">Rafailov et al., 2024</a>).</li>
@@ -352,12 +352,12 @@
             <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
           </figure>
           <p>
-          The figures above show ASR and accuracy after removing safety-critical regions in LLaMA2-7B-chat-hf identified by: 
-          <dl>
-            <dt>(a). Different pruning methods in neuron level with <b><span class="fontGrad-bg">constraint 3%</span></b>.</dt>
-            <dt>(b). Different methods in low rank modifications with <b><span class="fontGrad-bg">rank of the weight updates</span> \(\mathrm{rank} (\Delta W)\) <span class="fontGrad-bg">less than 100 (out of 4096)</span></b>.</dt>
-          </dl>
-          Among all methods, disentangling safety from utility (set difference for neurons and orthogonal projection for ranks) mostly effectively identify the safety-critical regions, with safety severely compromised while utility retains.
+          The figures above shows 4 key metrics in evaluating infringement risk for Llama2-7B-chat model, under RAG setting and memorization setting. Below are three key observations:
+          <ul>
+            <li>System Prompt and MemFree offer some mitigation but cannot completely prevent infringement.</li>
+            <li>Unlearning and Top-\(k\) perturbation reduce infringement but significantly compromises factual knowledge from the blocklisted content.</li>
+            <li>R-CAD is effective for takedown but comes at the cost of efficiency and risk of utility drop.</li>
+          </ul>
           </p>
         </div>
       </div>
@@ -370,19 +370,18 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container is-max-desktop is-centered has-text-centered">
-      <h2 class="title is-3", id="acknowledgement">Broader Impact and Acknowledgement</h2>
+      <h2 class="title is-3", id="acknowledgement">Limitations, Societal Impact, and Acknowledgement</h2>
       
       <div class="content has-text-justified">
         <p>
-          <b>Dual-use Risk.</b> Our study aims to improve model safety by identifying vulnerabilities, with the goal of encouraging stronger safety mechanisms. Despite potential misuse of our findings, we see more benefit than risk.
+          <b>Limitations.</b> Our study aims to improve model safety by identifying vulnerabilities, with the goal of encouraging stronger safety mechanisms. Despite potential misuse of our findings, we see more benefit than risk.
            Our tests are based on Llama2-chat models, which already have base models without built-in safety features, so there is no marginal increased risk. We highlight safety weaknesses to prompt the development of tougher guardrails. Our work doesn't simplify jailbreaking more than current methods but seeks to better understand and strengthen safety features. Our ultimate aim is to enhance AI safety in open models through thorough analysis.
         </p>
         <p>
-          <b>Safety and harm definitions.</b> Our research adheres to standard benchmarks for assessing safety and harm, though these may not encompass all definitions. We recommend further studies to broaden analysis into more settings and explore definitions and evaluations beyond our current scope.
+          <b>Societal Impact.</b> Our research adheres to standard benchmarks for assessing safety and harm, though these may not encompass all definitions. We recommend further studies to broaden analysis into more settings and explore definitions and evaluations beyond our current scope.
           </p>
           <p>
-            We express our gratitude to Vikash Sehwag, Chiyuan Zhang, Yi Zeng, Ruoxi Jia, Lucy He, Kaifeng Lyu, and the Princeton LLM Alignment reading group for providing helpful feedback. Boyi Wei and Tinghao Xie are supported by 	
-the Francis Robbins Upton Fellowship, Yangsibo Huang is supported by the Wallace Memorial Fellowship, and Xiangyu Qi is supported by Gordon Y. S. Wu Fellowship. This research is also supported by the Center for AI Safety Compute Cluster. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the sponsors. 
+          We express our gratitude to Tianle Cai, Andrew Sheinberg, and Mengzhou Xia for providing helpful feedback. Boyi Wei is supported by the Francis Robbins Upton Fellowship, and Yangsibo Huang is supported by the Wallace Memorial Fellowship.
           </p>
       </div>
     </div>
@@ -400,12 +399,6 @@ the Francis Robbins Upton Fellowship, Yangsibo Huang is supported by the Wallace
     <p>If you find our code and paper helpful, please consider citing our work:
     </p>
     <pre><code>
-@article{wei2024assessing,
-  title={Assessing the Brittleness of Safety Alignment via Pruning and Low-Rank Modifications},
-  author={Wei, Boyi and Huang, Kaixuan and Huang, Yangsibo and Xie, Tinghao and Qi, Xiangyu and Xia, Mengzhou and Mittal, Prateek and Wang, Mengdi and Henderson, Peter},
-  journal={arXiv preprint arXiv:2402.05162},
-  year={2024}
-}
 </code></pre>
   </div>
 </section>
