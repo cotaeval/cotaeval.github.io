@@ -394,7 +394,7 @@ h1, h2, h3, h4, h5, h6, figure {
   background: #FEE856;
 }
 #fh5co-features .services-padding {
-  padding: 7em 0;
+  padding: 5em 0;
 }
 #fh5co-features .feature-left {
   margin-bottom: 40px;
@@ -618,7 +618,7 @@ h1, h2, h3, h4, h5, h6, figure {
 #fh5co-content-section,
 #fh5co-contact,
 #fh5co-footer {
-  padding: 7em 0;
+  padding: 5em 0;
   clear: both;
 }
 @media screen and (max-width: 768px) {
@@ -1286,7 +1286,7 @@ input[type="text"] {
   margin-right: 4px;
   margin-bottom: 4px;
   font-family: "Inconsolata", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
@@ -1295,11 +1295,9 @@ input[type="text"] {
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
-  padding: 8px 20px;
+  /* padding: 8px 8px; */
 }
-.btn.btn-md {
-  padding: 8px 20px !important;
-}
+
 .btn.btn-lg {
   padding: 18px 36px !important;
 }
