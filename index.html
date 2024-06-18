@@ -43,14 +43,7 @@
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+
         .highlight {
             background-color: #d9fdd3;
         }
@@ -58,6 +51,26 @@
             display: inline-block;
             width: 100%;
         }
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		  }
+		  th, td {
+			padding: 8px;
+			text-align: left;
+		  }
+		  th {
+			border-bottom: 2px solid black;
+		  }
+		  .top-border {
+			border-top: 2px solid black;
+		  }
+		  .bottom-border {
+			border-bottom: 2px solid black;
+		  }
+		  .cmidrule {
+			border-bottom: 1px solid black;
+		  }
     </style>
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">	 -->
@@ -334,48 +347,52 @@
 						</div>
 						<table>
 							<thead>
-							  <tr>
-								  <th rowspan="2">Corpus</th>
-								  <th rowspan="2">Original datapoint</th>
-								  <th rowspan="2">Risk Eval</th>
-								  <th colspan="2">Utility Eval</th>
+								<tr class="bottom-border">
+									<td colspan="5"></td>
+								</tr>
+							  <tr class="bottom-border">
+								<th rowspan="2">Corpus</th>
+								<th rowspan="2">Original datapoint</th>
+								<th rowspan="2">Risk Eval</th>
+								<th colspan="2">Utility Eval</th>
 							  </tr>
 							  <tr>
-								  <th>Blocklisted or In-Domain</th>
-								  <th>General</th>
+								<th class="cmidrule">Blocklisted or In-Domain</th>
+								<th class="cmidrule">General</th>
 							  </tr>
-						  </thead>
-						  <tbody>
-							  <tr>
-								  <td><b>News</b></td>
-								  <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
-								  <td>
-									  <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
-									  <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
-								  </td>
-								  <td>
-									  <div><strong>Question:</strong> Who is founder of Apple?</div>
-									  <div><strong>Answer:</strong> Steve Jobs</div>
-								  </td>
-								  <td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
+							</thead>
+							<tbody>
+							  <tr class="top-border">
+								<td><b>News</b></td>
+								<td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
+								<td>
+								  <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
+								  <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
+								</td>
+								<td>
+								  <div><strong>Question:</strong> Who is founder of Apple?</div>
+								  <div><strong>Answer:</strong> Steve Jobs</div>
+								</td>
+								<td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
 							  </tr>
-							  <tr >
-								  <td><b>Books</b></td>
-								  <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
-								  <td>
-									  <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
-									  <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
-								  </td>
-								  <td>
-									  <div><strong>Question:</strong> Summarize this paragraph.</div>
-									  <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
-								  </td>
+							  <tr class="top-border">
+								<td><b>Books</b></td>
+								<td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
+								<td>
+								  <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
+								  <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
+								</td>
+								<td>
+								  <div><strong>Question:</strong> Summarize this paragraph.</div>
+								  <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
+								</td>
 							  </tr>
 							  <tr class="bottom-border">
 								<td colspan="5"></td>
 							</tr>
-						  </tbody>
-						</table>
+							</tbody>
+						  </table>
+						  
 						
 						<p>Our evaluation focuses on two prevalent types of text often involved in copyright
 							related cases: <i>news articles</i> and <i>books</i>. We divide the evaluation
