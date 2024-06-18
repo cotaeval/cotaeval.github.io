@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Evaluating Copyright Takedown Methods for Language Models">
+  <meta name="keywords" content="AI Safety, Model Alignment, Jailbreak">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evaluating Copyright Takedown Methods for Language Models</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./static/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./static/css/codemirror.min.css">
+  <link rel="stylesheet" href="./static/css/app.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/select.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="resources/glide.core.min.css">
+  <link rel="stylesheet" href="resources/glide.theme.min.css">
+  <link rel="stylesheet" href="resources/glide-custom.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/tifa.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Example</title>
+  <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .highlight {
+        background-color: #d9fdd3;
+    }
+    .pbox {
+        display: inline-block;
+        width: 100%;
+    }
+    .bottom-border td {
+        border-bottom: 2px solid black;
+    }
+  
+  body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      width: 100vw;
+  }
+  
+  nav {
+      width: var(--menu-width);
+      display: flex;
+      transform-style: preserve-3d;
+      justify-content: space-evenly;
+      position: relative;
+      z-index: 2;
+      margin: 0px auto;
+      perspective: 2000px;
+      flex-wrap: wrap;
+      top: 3em;
+      background: linear-gradient(45deg, #102eff, #d2379b);
+  }
+  
+  nav .menu-item {
+      color: white;
+      font-weight: 600;
+      transform-style: preserve-3d;
+      flex-grow: 1;
+      display: flex;
+      flex-basis: var(--item-width);
+      box-sizing: border-box;
+      padding: 1em 1.5em;
+      justify-content: center;
+      perspective: 200px;
+      letter-spacing: 0.5px;
+      min-height: 7.5em;
+  }
+  
+  nav .menu-text, nav .menu-text a {
+      font-size: 1em;
+      color: white;
+      text-decoration: none;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      transition: color 0.1s ease-out;
+      text-align: center;
+  }
+  
+  nav .menu-text a:hover {
+      color: rgba(255,255,255,0.5);
+  }
+  
+  #sub-menu-holder {
+      pointer-events: none;
+      color: rgba(0,0,0,0.5);
+      font-weight: normal;
+      padding: 1em;
+      position: absolute;
+      transition: opacity 2 ease-out;
+      transform: rotateX(-25deg) scale(1);
+      transform-origin: 50% 7em 0em;
+      opacity: 0;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.1), 0 2px 20px rgba(0,0,0,0.3);
+      box-sizing: border-box;
+      top: 3rem;
+      border-radius: 10px;
+      background: white;
+      display: block;
+      height: 300px;
+      width: calc(var(--menu-width) * 1.5);
+  }
+  
+  #sub-menu-container {
+      position: absolute;
+      z-index: -1;
+      min-width: 100%;
+      top: 2.5em;
+      width: 100%;
+  }
+  
+  nav .menu-item:hover ~ #sub-menu-container #sub-menu-holder {
+      animation: clipPath 0.25s ease-out 1 forwards;        
+      transition: clip-path 0.25s ease-out, left 0.15s ease-out, height 0.15s ease-out;
+      opacity: 1;
+      right: auto;
+  }
+  nav .menu-item:nth-of-type(1):hover ~ #sub-menu-container #sub-menu-holder,
+  nav .menu-item:nth-of-type(4):hover ~ #sub-menu-container #sub-menu-holder {
+      clip-path: inset(0 28.75em 0 0 round 10px);
+      height: 14em;
+  }
+  
+  nav .menu-item:nth-of-type(2):hover ~ #sub-menu-container #sub-menu-holder,
+  nav .menu-item:nth-of-type(3):hover ~ #sub-menu-container #sub-menu-holder {
+      clip-path: inset(0 15em 0 0 round 10px);
+  }
+  
+  nav .menu-item:nth-of-type(1):hover ~ #sub-menu-container #sub-menu-holder {
+      left: calc(-9em + -1px);
+  }
+  nav .menu-item:nth-of-type(2):hover ~ #sub-menu-container #sub-menu-holder {
+      left: calc(-6.5em + -1px);
+      height: 18.75em;
+  }
+  nav .menu-item:nth-of-type(3):hover ~ #sub-menu-container #sub-menu-holder {
+      left: calc(2.75em + 1px);
+      height: 24.5em;
+  }
+  nav .menu-item:nth-of-type(4):hover ~ #sub-menu-container #sub-menu-holder {
+      left: calc(19em + 1px);
+  }
+  
+  .menu-item .sub-menu {
+      position: absolute;
+      top: 7em;
+      color: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      min-width: 27.5em;
+      pointer-events: none;
+      box-sizing: border-box;
+      z-index: 999;
+      margin-left: -5em;
+      clip-path: inset(0 10em 10em 15em);
+      opacity: 0;
+      font-weight: initial;
+      padding: 1.5em;
+      transition: all 0.25s ease-out, opacity 0.25s ease-in, margin-left 0.25s ease-out, clip-path 0.15s ease-out;
+  }
+  
+  .menu-item .sub-menu.double {
+      min-width: 41.25em;
+      height: 18.75em;
+      display: grid;
+      grid-template-columns: 54% 50%;
+  }
+  .menu-item .sub-menu.triple {
+      min-width: 41.25em;
+      height: 25em;
+      display: grid;
+      padding: 1.5em 2.5em;
+      grid-template-columns: 55% 45%;
+  }
+  .menu-item:hover .sub-menu {
+      pointer-events: all;
+      clip-path: inset(0 0 0 0);
+  }
+  
+  .menu-text:after {
+      transition: bottom 0.25s ease-out, opacity 0.01s ease-out 0.01s;
+      opacity: 0;
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      bottom: -5em;
+      left: calc(50% - 10px);
+      border-color: transparent transparent white transparent;
+      border-width: 10px;
+      border-style: solid;
+  }
+  .menu-item:hover .menu-text:after {
+      bottom: 0.5em;
+      opacity: 1;
+      transition: bottom 0.25s ease-out, opacity 0.01s ease-out 0.15s;
+  }
+  .menu-item:hover .sub-menu {
+      opacity: 1;
+      margin-left: 0;
+  }
+  
+  .menu-item:hover ~ #sub-menu-container #sub-menu-holder  {
+      transition: transform 0.25s ease-out, opacity 0.25s ease-out, clip-path 0.25s ease-out;
+  }
+  
+  @keyframes clipPath {
+      0% {
+          opacity: 0;
+      }
+      100% {
+          transform: rotateX(0deg) scale(1);
+          top: 4.5em;
+          opacity: 1;        
+      }
+  }
+  
+  /* Menu specific */
+  .menu-item .title {
+      font-weight: 500;
+      color: rgb(44 70 86);
+      margin: 0 0 0.25em 0;
+  }
+  
+  .menu-item .icon-box * {
+      transition: all 0.1s ease-out;
+      position: relative;
+  }
+  .menu-item .icon-box.space {
+      margin-bottom: 1.25em;
+  }
+  .menu-item .icon-box.flat {height: 1.5em;margin-bottom: 0.5em;}
+  .menu-item .icon, .menu-item .text {
+      float: left;
+      color: #9ea9af;
+  }
+  
+  .menu-item .icon {
+      color: rgb(44 70 86);
+      font-size: 1.25em;
+      margin: 0 1em 0 0;
+  }
+  .menu-item .icon-box {
+      cursor: pointer;
+  }
+  .menu-item .icon-box {
+      float: left;
+      width: 100%;
+      margin: 0;
+      height: 4em;
+      row-gap: 0;
+      line-height: 1em;
+  }
+  
+  .menu-item .icon-box .text i {
+      clip-path: inset(0 100% 0 0);
+      font-size: 0.75em;
+      position: relative;
+      top: -1px;
+  }
+  
+  /* Base Icon Style */
+  .icon-box.gb .icon i:before {
+      background: linear-gradient(45deg, #0c86ef, #0cef9b);
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      padding-left: 1px;
+  }
+  
+  /* Define Icon Colors */
+  .icon-box.gb.a .icon i:before {background-image: linear-gradient(45deg, #2ca7ff 35%, #31d078 75%);}
+  .icon-box.gb.b .icon i:before {background-image: linear-gradient(45deg, #f32b2b 35%, #efbe0c 75%);}
+  .icon-box.gb.c .icon i:before {background-image: linear-gradient(45deg, #7176ff 35%, #b26cea 75%);}
+  .icon-box.gb.d .icon i:before {background-image: linear-gradient(45deg, #79c76f 35%, #bed09b 75%);}
+  .icon-box.gb.e .icon i:before {background-image: linear-gradient(45deg, #6082ff 35%, #ff5dbe 75%);}
+  .icon-box.gb.f .icon i:before {background-image: linear-gradient(45deg, #808080 35%, #bbbbbb 75%);}
+  
+  .menu-item .icon-box:hover .text i {
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 0.1s ease-out;
+  }
+  
+  .menu-item .icon-box:hover .icon, .menu-item .icon-box:hover .title, .menu-item .icon-box:hover .sub-text {
+      color: rgb(89 110 123);
+  }
+  
+  #sub-menu-bottom {
+      background: #d4e3ea70;
+      position: absolute;
+      bottom: 0;
+      opacity: 0;
+      transition: all 0.25s ease-out, height 0.1s ease-out;
+      left: 0;
+      width: 100%;
+      height: 5em;
+  }
+  nav .menu-item:nth-of-type(3).highlight:hover ~ #sub-menu-container #sub-menu-holder #sub-menu-bottom {
+      height: 7.5em;
+  }
+  .bottom-container {
+      grid-area: 4 / -3 / 4 / 3;
+      padding-top: 1.5em;
+      color: #3a5260;
+      font-weight: 500;
+  }
+  
+  .top-container {
+      grid-area: 1 / -3 / 1 / 3;
+      margin: 0 0 2em 0;
+  }
+  
+  .bottom-container a {
+      float: right;
+      background: linear-gradient(90deg, #8ea4b166, #a3b5bf6b);
+      padding: 0.5em 1em;
+      border-radius: 100px;
+      position: absolute;
+      color: #2c4655bf;
+      font-weight: bold;
+      text-decoration: none;
+      right: 1.5em;
+      bottom: 1.5em;
+  }
+  
+  .bottom-container a:hover {
+      background: linear-gradient(90deg, #8ea4b136, #a3b5bf33);
+  }
+  
+  .sub-menu h3 {
+      font-size: 1em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgb(44 70 86 / 68%);
+      margin: 0.75em 0;
+  }
+  
+  .sub-menu .box a {
+      width: 100%;
+      float: left;
+      font-size: 1em;
+      line-height: 1.75em;
+      color: #7a8a94;
+      text-decoration: none;
+  }
+  
+  .sub-menu .box a:hover {
+      color: rgb(44 70 86);
+  }
+  
+  .box {
+      margin: 0 0 3em 0;
+  }
+  
+  .icon.big i {
+      font-size: 1.25em;
+      top: 0.2em;
+  }
+  nav .menu-item.highlight:hover ~ #sub-menu-container #sub-menu-holder #sub-menu-bottom { opacity: 1; }
+  
+
+  #info-box {
+      position: absolute;
+      bottom: 2em;
+      right: 2em;
+  }
+  
+  #info-box ul {
+      list-style: none;
+  }
+  #info-box a {
+      color: white;
+      text-decoration: none;
+      text-align: right;
+      padding: 0.5em 0;
+      transition: all 0.1s ease-out;
+      display: block;
+      text-transform: uppercase;
+      font-size: 1.25em;
+      font-weight: 900;
+      letter-spacing: 1px;
+  }
+  #info-box a:hover {
+      color: rgba(255,255,255,0.5);
+  }
+  </style>
+</head>
+<body>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BLEVG737MK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-BLEVG737MK');
+  </script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFCT45H" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+
+<nav id="menu">
+    <div class="menu-item">
+        <div class="menu-text">
+            <a href="#overview">Overview</a>
+        </div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-text">
+          <a href="#causes">Causes and Takedowns</a>
+      </div>
+  </div>
+    <div class="menu-item">
+      <div class="menu-text">
+          <a href="#pipeline">Evaluation Pipeline</a>
+      </div>
+  </div>
+  <div class="menu-item">
+    <div class="menu-text">
+        <a href="#experiments">Experiments</a>
+    </div>
+  </div>
+  <div class="menu-item">
+    <div class="menu-text">
+        <a href="#acknowledgement">Limitations and Acknowledgement</a>
+    </div>
+  </div>
+  <div class="menu-item">
+    <div class="menu-text">
+        <a href="#reference">BibTex</a>
+    </div>
+  </div>
+</nav>
+<!-- <nav id="menu" role="navigation" aria-label="main navigation">
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+  
+
+      <div class="navbar-item is-hoverable">
+        <a class="menu-text" href="#overview">
+          Overview
+        </a>
+        <a class="navbar-item" href="#causes">
+          Causes and Takedowns
+        </a>
+          <a class="navbar-item" href="#pipeline">
+            Evaluation Pipeline
+          </a>
+          <a class="navbar-item" href="#experiments">
+            Experiments
+          </a>
+          <a class="navbar-item" href="#acknowledgement">
+            Limitations and Acknowledgement
+          </a>
+          <a class="navbar-item" href="#reference">
+            BibTeX
+          </a>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Evaluating Copyright Takedown Methods<br>for Language Models</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://boyiwei.com">Boyi Wei<sup>*1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://swj0419.github.io/">Weijia Shi<sup>*2</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://hazelsuko07.github.io/yangsibo/">Yangsibo Huang<sup>*1</sup></a>,
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="https://nasmith.github.io/">Noah A. Smith<sup>2</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://pluskid.org/">Chiyuan Zhang</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.cs.washington.edu/people/faculty/lsz">Luke Zettlemoyer<sup>2</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.cs.princeton.edu/~li/">Kai Li<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.peterhenderson.co">Peter Henderson<sup>1</sup></a>
+              </span>
+            </div>
+  
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Princeton University, <sup>2</sup>University of Washington</span>
+            </div>
+  
+            <div class="is-size-5 publication-authors">
+              <span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup>*</sup>Equal contribution</span>
+            </div>
+            
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2402.05162"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/boyiwei/CoTaEval"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                    </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/boyiwei/CoTaEval"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fas fa-database"></i>
+                    </span>
+                    <span>Dataset</span>
+                    </a>
+                </span>
+                <!-- Leaderboard Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/spaces/boyiwei/CoTaEval_leaderboard"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="far fa-chart-bar"></i>
+                    </span>
+                    <span>Leaderboard</span>
+                    </a>
+                </span>
+              </div>        
+  
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+  </section>
+  
+  
+  
+  
+  
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <h2 class="title is-3", id="overview">Overview</h2>
+        <div class="content has-text-justified">
+  
+          <p> Language models (LMs) derive their capabilities from extensive training on diverse data, including copyrighted material. 
+            These models can memorize and generate content similar to their training data, potentially risking legal issues like copyright infringement. Therefore, model creators are motivated to develop mitigation methods that prevent generating particular copyrighted content, an ability we refer to as <span style="font-style: italic;" >copyright takedowns</span>. 
+            However, there's lack of evaluation feasibility and side effects of these methods. In this project, we make the following key contributions:
+            <ul>
+              <li><span class="fontGrad-bg"><b>A taxonomy of infringement causes and takedown methods.</b></span> We identify two primary causes of infringement: <b>memorization</b> and <b>retrieval augmentation (RAG)</b>; and compile a taxonomy of takedown methods, including <b>generic prevention</b>, <b>decoding-time interventions</b>, and <b>training-based intervensions.</b></li>
+              <li><span class="fontGrad-bg"><b>An evaluation suite.</b></span> We introduce <b>CoTaEval</b>, the first benchmark to evaluate the feasibility and side effects of takedown methods.</li>
+              <li><span class="fontGrad-bg"><b>An evaluation of takedown methods and implications.</b></span> We evaluate the performace on various takedown methods, and find no method excel across all metrics, showing sinificant room for research in this unique problem setting and indicating potential unresolved challenges for live policy proposals.</li>
+  
+            </ul>
+             
+          </p>
+          </div>
+          <img src="./static/images/main.png" alt="pipeline">     
+          </div>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+  
+      <!-- </section> -->
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <h2 class="title is-3", id="causes">Copyright Infringement in Language Models: Causes and Takedowns</h2>
+        <div class="content has-text-justified">
+            <p>
+              <h4 class="title is-4", id="motivation">Causes</h4>
+              Recent litigation (<a href="https://casetext.com/case/tremblay-v-openai-inc-2">Tremblay v. OpenAI, Inc</a>, <a href="https://casetext.com/case/kadrey-v-meta-platforms-inc">Kadrey v. Meta Platforms, Inc.</a>, <a href="https://www.courtlistener.com/docket/67778017/chabon-v-openai-inc/">Chabon v. OpenAI, Inc.</a>, <a href="https://www.courtlistener.com/docket/65669506/doe-1-v-github-inc/">DOE 1 v. GitHub, Inc.</a>) has pointed to two scenarios where a language model deployment might lead to infringement: 
+              <ul>
+                <li>Copyrighted content is memorized within the model's parameters during training (<i>Memorization</i>),
+                <li>Copyrighted content is incorporated as additional context during retrieval-augmented generation (<i>RAG</i>).</li> 
+              </ul>
+              <h4 class="title is-4", id="motivation">Takedown methods</h4>
+              Our evaluation considers three types of takedown methods that intervene at different stages of the language model:
+              <ul>
+                <li>Strategies that generally try to prevent infringement without specifying a blocklist, including System Prompt and Top-\(k\) Perturbation (Adding Gaussian noise to the logits in top-\(k\) sampling);</li>
+                <li>Methods that prevent the generation of blocklisted content during decoding, including MemFree (<a href="https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/642948/2/2023.inlg-main.3.pdf">Ippolito et al., 2023</a>), Reversed Context Aware Decoding (R-CAD; <a href="https://arxiv.org/pdf/2305.14739">Shi et al., 2023</a>);</li>
+                <li>Training-based interventions like unlearning, including Gradient Ascent (<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9797378&casa_token=sPm5CiNuBTQAAAAA:ORsczWa5cfRS2V-jt7eszNxl6Xu9Y9kVKKbPP3I6BU-8LY3CAAAGpL5ZbMhzxKSikC2MXAU">Thudi et al., 2022</a>), Gradient Difference(<a href="https://proceedings.mlr.press/v199/liu22a/liu22a.pdf">Liu et al., 2022</a>), KL minimization(<a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Golatkar_Eternal_Sunshine_of_the_Spotless_Net_Selective_Forgetting_in_Deep_CVPR_2020_paper.pdf">Golatkar et al., 2020</a>),
+                and Preference Optimization (<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/a85b405ed65c6477a4fe8302b5e06ce7-Paper-Conference.pdf">Rafailov et al., 2024</a>).</li>
+              </ul>
+  
+            </p>
+          </div>
+        </div>
+    </div>
+  </section>
+  
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <h2 class="title is-3", id="pipeline">The CoTaEval Evaluation Pipeline</h2>
+        <div class="content has-text-justified">
+            <p>
+              Our evaluation focuses on two prevalent types of text often involved in copyright infringement cases: <i>news articles</i> and <i>books</i>. We divide the evaluation corpus into two parts: blocklisted content \(\mathcal{D}_{\text{blocklisted}}\), which the model should avoid generating, and in-domain content \(\mathcal{D}_{\text{in-domain}}\), which is from the same domain as \(\mathcal{D}_{\text{blocklisted}}\) but not subject to takedown requests. CoTaEval evalautes the takedown methods from three perspectives:
+              <ul>
+                <li><b>Infringement Risk Evaluation</b></li>
+                    <ul>
+                    <li>For <i>exact match</i> infringement, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
+                    <li>For <i>near duplicate</i> infringement, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
+                    </ul>
+                <li><b>Utility Evaluation</b>
+                  <ul>
+                    <li>For <i>blocklisted utility and in-domain utility</i>, we compute word level F1 score between the generated content and answer for QA tasks in news articles, and compute ROUGE score between the generated content and ground truth for summarization taks in books.</li>
+                    <li>For <i>general utility</i>, we use MT-Bench(<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf">Zheng et al., 2024</a>) and MMLU(<a href="https://arxiv.org/pdf/2009.03300">Hendrycks et al., 2021</a>), two widely adopted benchmarks that evaluate the model's knowledge and reasoning abilities across a diverse range of subjects and tasks. </li>
+                  </ul>
+                <li><b>Efficiency Evaluation</b>
+                  <ul>
+                    <li>We configure the model to generate 200 tokens and measure efficiency in terms of tokens per second. Using the value from the vanilla case as our baseline, we report the relative speed of each method by dividing its tokens per second by the tokens per second of the vanilla method.</li>
+                  </ul>
+              </ul>
+            </p>
+            <table>
+              <thead>
+                <tr>
+                    <th rowspan="2">Corpus</th>
+                    <th rowspan="2">Original datapoint</th>
+                    <th rowspan="2">Infringement Eval</th>
+                    <th colspan="2">Utility Eval</th>
+                </tr>
+                <tr>
+                    <th>Blocklisted or In-Domain</th>
+                    <th>General</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>News</b></td>
+                    <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
+                    <td>
+                        <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
+                        <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
+                    </td>
+                    <td>
+                        <div><strong>Question:</strong> Who is founder of Apple?</div>
+                        <div><strong>Answer:</strong> Steve Jobs</div>
+                    </td>
+                    <td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
+                </tr>
+                <tr >
+                    <td><b>Books</b></td>
+                    <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
+                    <td>
+                        <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
+                        <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
+                    </td>
+                    <td>
+                        <div><strong>Question:</strong> Summarize this paragraph.</div>
+                        <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
+                    </td>
+                </tr>
+                <tr class="bottom-border">
+                  <td colspan="5"></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </section>
+  
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <h2 class="title is-3", id="experiments">Experiments</h2>
+        <div class="content has-text-justified">
+            <figure>
+              <iframe src="./static/images/violin_plot_rag.html" width="100%" height="370"></iframe>
+              <figcaption>(a) RAG setting</figcaption>
+              <iframe src="./static/images/violin_plot_mem.html" width="100%" height="370"></iframe>
+              <figcaption>(b) Memorization Setting</figcaption>
+              <figcaption><span class="author-block" style="color: gray; font-size: smaller; font-style: italic;"><sup></sup>For the best experience, please view this interactive figure on a desktop.</span></figcaption>
+            </figure>
+            <p>
+            The figures above shows 4 key metrics in evaluating infringement risk for Llama2-7B-chat model, under RAG setting and memorization setting. Below are three key observations:
+            <ul>
+              <li>System Prompt and MemFree offer some mitigation but cannot completely prevent infringement.</li>
+              <li>Unlearning and Top-\(k\) perturbation reduce infringement but significantly compromises factual knowledge from the blocklisted content.</li>
+              <li>R-CAD is effective for takedown but comes at the cost of efficiency and risk of utility drop.</li>
+            </ul>
+            </p>
+          </div>
+        </div>
+    </div>
+  </section>
+  
+  
+  
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <h2 class="title is-3", id="acknowledgement">Limitations and Acknowledgement</h2>
+        
+        <div class="content has-text-justified">
+          <p>
+            <b>Limitations.</b> CoTaEval is an initial effort to evaluate copyright takedown methods, there is room for improvement in future studies. For example, relatively small evaluation datasets, lack of evaluation of the offline cost, and the need for more diverse general utility evaluation. Furthermore, the field lacks a clear, quantitative definition of copyright
+            infringement, as most cases need to be assessed on a case-by-case basis. Future work could focus on a more detailed
+            exploration of legal standards for infringement.
+          </p>
+            <p>
+            We express our gratitude to Tianle Cai, Andrew Sheinberg, and Mengzhou Xia for providing helpful feedback. Boyi Wei is supported by the Francis Robbins Upton Fellowship, and Yangsibo Huang is supported by the Wallace Memorial Fellowship.
+            </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered">
+        <h2 class="title is-3", id="reference">BibTeX</h2>
+        
+        <div class="content has-text-justified">
+      <p>If you find our code and paper helpful, please consider citing our work:
+      </p>
+      <pre><code>
+  </code></pre>
+    </div>
+  </section>
+  
+  
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                                                  href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              We base the design of this website on <a href="https://nerfies.github.io/">https://nerfies.github.io</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+</body>
+</html>
