@@ -259,7 +259,7 @@
 			<div class="container">
 				<!-- <div class="row animate-box"> -->
 				<div class="fh5co-heading">
-					<h2 class="title is-3">Copyright Infringement in LMs: Causes and Takedowns</h3>
+					<h2 class="title is-3">Causes to Regurgitation of Copyrighted Contents and Takedown Methods</h3>
 				</div>
 				<!-- </div> -->
 				<div class="row">
@@ -278,11 +278,11 @@
 								OpenAI, Inc.</a>, <a
 								href="https://www.courtlistener.com/docket/65669506/doe-1-v-github-inc/">DOE 1 v.
 								GitHub, Inc.</a>) has pointed to two scenarios where a language model deployment
-							might lead to infringement:
+							might lead to copyright concerns:
 							<ul>
-								<li>Copyrighted content is memorized within the model's parameters during training
+								<li>Content is memorized within the model's parameters during training
 									(<i>Memorization</i>),
-								<li>Copyrighted content is incorporated as additional context during
+								<li>Content is incorporated as additional context during
 									retrieval-augmented generation (<i>RAG</i>).</li>
 							</ul>
 						</div>
@@ -298,7 +298,7 @@
 								Our evaluation considers three types of takedown methods that intervene at different
 							stages of the language model:
 							<ul>
-								<li>Strategies that generally try to prevent infringement without specifying a
+								<li>Strategies that generally try to prevent regurgitation without specifying a
 									blocklist, including System Prompt and Top-\(k\) Perturbation (Adding Gaussian
 									noise to the logits in top-\(k\) sampling);</li>
 								<li>Methods that prevent the generation of blocklisted content during decoding,
@@ -376,6 +376,7 @@
 							</tr>
 						  </tbody>
 						</table>
+						
 						<p>Our evaluation focuses on two prevalent types of text often involved in copyright
 							infringement cases: <i>news articles</i> and <i>books</i>. We divide the evaluation
 							corpus into two parts: blocklisted content \(\mathcal{D}_{\text{blocklisted}}\), which
