@@ -38,6 +38,27 @@
 	<script type="text/javascript" async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js">
   	</script>
+	  <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #d9fdd3;
+        }
+        .pbox {
+            display: inline-block;
+            width: 100%;
+        }
+    </style>
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">	 -->
 	<!-- <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> -->
@@ -311,6 +332,50 @@
 						<div class="fh5co-heading">
 							<h2 class="title is-3">Evaluation Pipeline</h2>
 						</div>
+						<table>
+							<thead>
+							  <tr>
+								  <th rowspan="2">Corpus</th>
+								  <th rowspan="2">Original datapoint</th>
+								  <th rowspan="2">Infringement Eval</th>
+								  <th colspan="2">Utility Eval</th>
+							  </tr>
+							  <tr>
+								  <th>Blocklisted or In-Domain</th>
+								  <th>General</th>
+							  </tr>
+						  </thead>
+						  <tbody>
+							  <tr>
+								  <td><b>News</b></td>
+								  <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
+								  <td>
+									  <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
+									  <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
+								  </td>
+								  <td>
+									  <div><strong>Question:</strong> Who is founder of Apple?</div>
+									  <div><strong>Answer:</strong> Steve Jobs</div>
+								  </td>
+								  <td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
+							  </tr>
+							  <tr >
+								  <td><b>Books</b></td>
+								  <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
+								  <td>
+									  <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
+									  <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
+								  </td>
+								  <td>
+									  <div><strong>Question:</strong> Summarize this paragraph.</div>
+									  <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
+								  </td>
+							  </tr>
+							  <tr class="bottom-border">
+								<td colspan="5"></td>
+							</tr>
+						  </tbody>
+						</table>
 						<p>Our evaluation focuses on two prevalent types of text often involved in copyright
 							infringement cases: <i>news articles</i> and <i>books</i>. We divide the evaluation
 							corpus into two parts: blocklisted content \(\mathcal{D}_{\text{blocklisted}}\), which
@@ -396,11 +461,11 @@
 							The figures above shows 4 key metrics in evaluating infringement risk for Llama2-7B-chat
 							model, under RAG setting and memorization setting. Below are three key observations:
 						<ul>
-							<li style="color: white;">System Prompt and MemFree offer some mitigation but cannot
+							<li>System Prompt and MemFree offer some mitigation but cannot
 								completely prevent infringement.</li>
-							<li style="color: white;">Unlearning and Top-\(k\) perturbation reduce infringement but
+							<li>Unlearning and Top-\(k\) perturbation reduce infringement but
 								significantly compromises factual knowledge from the blocklisted content.</li>
-							<li style="color: white;">R-CAD is effective for takedown but comes at the cost of
+							<li>R-CAD is effective for takedown but comes at the cost of
 								efficiency and risk of utility drop.</li>
 						</ul>
 						</p>
