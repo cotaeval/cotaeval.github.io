@@ -8,7 +8,7 @@ $border-radius-base:  4px !default;
 $padding-base-vertical: 14px !default;
 
 $brand-primary: #DD356E !default;
-$brand-secondary: #fff !default;
+$brand-secondary: #fff !important;
 $brand-tertiary: #2A528A !default;
 
 $brand-white: #fff;
@@ -113,7 +113,7 @@ body {
 	font-size: 18px;
 	line-height: 1.7;
 	color: darken($brand-white,80%);
-	background: #fff;
+	background: #fff !important;
 }
 #page {
 	position: relative;
@@ -465,7 +465,7 @@ h1, h2, h3, h4, h5, h6, figure {
 
 #fh5co-features {
 	// padding: 7em 0;
-	background: #fff;
+	background: #fff !important;
 	.services-padding{
 		padding: 7em 0;
 	}
