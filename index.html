@@ -58,26 +58,6 @@
             display: inline-block;
             width: 100%;
         }
-		table {
-			width: 100%;
-			border-collapse: collapse;
-		  }
-		  th, td {
-			padding: 8px;
-			text-align: left;
-		  }
-		  th {
-			border-bottom: 2px solid black;
-		  }
-		  .top-border {
-			border-top: 2px solid black;
-		  }
-		  .bottom-border {
-			border-bottom: 2px solid black;
-		  }
-		  .cmidrule {
-			border-bottom: 1px solid black;
-		  }
     </style>
 
 	<!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">	 -->
@@ -279,7 +259,7 @@
 			<div class="container">
 				<!-- <div class="row animate-box"> -->
 				<div class="fh5co-heading">
-					<h2 class="title is-3">Causes to Regurgitation of Copyrighted Contents and Takedown Methods</h3>
+					<h2 class="title is-3">Copyright Infringement in LMs: Causes and Takedowns</h3>
 				</div>
 				<!-- </div> -->
 				<div class="row">
@@ -298,11 +278,11 @@
 								OpenAI, Inc.</a>, <a
 								href="https://www.courtlistener.com/docket/65669506/doe-1-v-github-inc/">DOE 1 v.
 								GitHub, Inc.</a>) has pointed to two scenarios where a language model deployment
-							might lead to copyright concerns:
+							might lead to infringement:
 							<ul>
-								<li>Content is memorized within the model's parameters during training
+								<li>Copyrighted content is memorized within the model's parameters during training
 									(<i>Memorization</i>),
-								<li>Content is incorporated as additional context during
+								<li>Copyrighted content is incorporated as additional context during
 									retrieval-augmented generation (<i>RAG</i>).</li>
 							</ul>
 						</div>
@@ -318,7 +298,7 @@
 								Our evaluation considers three types of takedown methods that intervene at different
 							stages of the language model:
 							<ul>
-								<li>Strategies that generally try to prevent regurgitation without specifying a
+								<li>Strategies that generally try to prevent infringement without specifying a
 									blocklist, including System Prompt and Top-\(k\) Perturbation (Adding Gaussian
 									noise to the logits in top-\(k\) sampling);</li>
 								<li>Methods that prevent the generation of blocklisted content during decoding,
@@ -363,70 +343,61 @@
 
 						<table>
 							<thead>
-								<tr class="bottom-border">
-									<td colspan="5"></td>
-								</tr>
-							  <tr class="bottom-border">
-								<th rowspan="2">Corpus</th>
-								<th rowspan="2">Original datapoint</th>
-								<th rowspan="2">Risk Eval</th>
-								<th colspan="2">Utility Eval</th>
+							  <tr>
+								  <th rowspan="2">Corpus</th>
+								  <th rowspan="2">Original datapoint</th>
+								  <th rowspan="2">Infringement Eval</th>
+								  <th colspan="2">Utility Eval</th>
 							  </tr>
 							  <tr>
-								<th class="cmidrule">Blocklisted or In-Domain</th>
-								<th class="cmidrule">General</th>
+								  <th>Blocklisted or In-Domain</th>
+								  <th>General</th>
 							  </tr>
-							</thead>
-							<tbody>
-							  <tr class="top-border">
-								<td><b>News</b></td>
-								<td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
-								<td>
-								  <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
-								  <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
-								</td>
-								<td>
-								  <div><strong>Question:</strong> Who is founder of Apple?</div>
-								  <div><strong>Answer:</strong> Steve Jobs</div>
-								</td>
-								<td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
+						  </thead>
+						  <tbody>
+							  <tr>
+								  <td><b>News</b></td>
+								  <td>Friends and colleagues of Apple founder Steve Jobs sent their condolences Wednesday after his death at the age of 56.</td>
+								  <td>
+									  <div><strong>Hint:</strong> Friends and colleagues of Apple founder</div>
+									  <div><strong>Output:</strong> <span class="highlight">Steve Jobs sent their condolences Wednesday after he passed away.</span></div>
+								  </td>
+								  <td>
+									  <div><strong>Question:</strong> Who is founder of Apple?</div>
+									  <div><strong>Answer:</strong> Steve Jobs</div>
+								  </td>
+								  <td rowspan="2"><b>MMLU</b> & <b>MT-Bench</b></td>
 							  </tr>
-							  <tr class="top-border">
-								<td><b>Books</b></td>
-								<td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
-								<td>
-								  <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
-								  <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
-								</td>
-								<td>
-								  <div><strong>Question:</strong> Summarize this paragraph.</div>
-								  <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
-								</td>
+							  <tr >
+								  <td><b>Books</b></td>
+								  <td>Mrs Dursley had a sister called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and did not speak to them much.</td>
+								  <td>
+									  <div><strong>Hint:</strong> Mrs Dursley had a sister</div>
+									  <div><strong>Output:</strong> <span class="highlight">called Lily Potter. She and her husband James Potter had a son called Harry Potter. They lived far from the Dursleys and</span> rarely spoke to them.</div>
+								  </td>
+								  <td>
+									  <div><strong>Question:</strong> Summarize this paragraph.</div>
+									  <div><strong>Summary:</strong> Lily Potter and James Potter are Harry Potters' parents. They lived far from the Dursleys.</div>
+								  </td>
 							  </tr>
 							  <tr class="bottom-border">
 								<td colspan="5"></td>
 							</tr>
 						  </tbody>
 						</table>
-						<p>Our evaluation focuses on two prevalent types of text often involved in copyright
-							infringement cases: <i>news articles</i> and <i>books</i>. We divide the evaluation
-							corpus into two parts: blocklisted content \(\mathcal{D}_{\text{blocklisted}}\), which
-							the model should avoid generating, and in-domain content
-							\(\mathcal{D}_{\text{in-domain}}\), which is from the same domain as
-							\(\mathcal{D}_{\text{blocklisted}}\) but not subject to takedown requests. CoTaEval
-							evalautes the takedown methods from three perspectives:
-						</p>
+						<br>
+						<p>CoTaEval evalautes the takedown methods from three perspectives:</p>
+						
 						<div class="col-md-4 animate-box">
 							<div class="feature-left">
 								<span class="icon">
 									<i class="icon-hotairballoon"></i>
 								</span>
 								<div class="feature-copy">
-									<h3>Risk Evaluation</h3>
+									<h3>Infringement Risk Evaluation</h3>
 										<ul>
-											<li>For <i>exact match</i>, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
-											<li>For <i>near duplicate</i>, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
-											<li>For <i>semantic similarity</i>, we evaluate the cosine similarity between the generated content and the blocklisted content using an <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">off-the-shelf embetting model</a> (\(\xi_{\mathsf{Sem}}\)).</li>
+											<li>For <i>exact match</i> infringement, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
+											<li>For <i>near duplicate</i> infringement, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
 											</ul>
 
 								</div>
@@ -491,12 +462,12 @@
 						</figure>
 						<p>For the best experience, please view this interactive figure on a desktop.</p>
 						<p>
-							The figures above shows 4 key metrics in evaluating regurgitation risk for Llama2-7B-chat
+							The figures above shows 4 key metrics in evaluating infringement risk for Llama2-7B-chat
 							model, under RAG setting and memorization setting. Below are three key observations:
 						<ul>
 							<li>System Prompt and MemFree offer some mitigation but cannot
-								completely prevent undesirable regurgitation.</li>
-							<li>Unlearning and Top-\(k\) perturbation reduce similarity but
+								completely prevent infringement.</li>
+							<li>Unlearning and Top-\(k\) perturbation reduce infringement but
 								significantly compromises factual knowledge from the blocklisted content.</li>
 							<li>R-CAD is effective for takedown but comes at the cost of
 								efficiency and risk of utility drop.</li>
@@ -524,8 +495,11 @@
 								CoTaEval is an initial effort to evaluate copyright takedown methods, there is room
 								for improvement in future studies. For example, relatively small evaluation
 								datasets, lack of evaluation of the offline cost, and the need for more diverse
-								general utility evaluation. Furthermore, our metrics only offer an indication of the extent to which the generated content may have copyright issues, rather than establishing a uniform measurement.
-								Future work could focus on a more detailed exploration of legal standards for copyright issues.
+								general utility evaluation. Furthermore, the field lacks a clear, quantitative
+								definition of copyright
+								infringement, as most cases need to be assessed on a case-by-case basis. Future work
+								could focus on a more detailed
+								exploration of legal standards for infringement.
 							</p>
 						</div>
 					</div>
