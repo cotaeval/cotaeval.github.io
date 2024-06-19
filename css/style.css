@@ -689,7 +689,7 @@ h1, h2, h3, h4, h5, h6, figure {
   font-weight: 200;
   line-height: 2;
   outline: transparent;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   text-align: center;
   text-decoration: none;
   transition: box-shadow .2s ease-in-out;
