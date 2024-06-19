@@ -346,7 +346,7 @@
 							  <tr>
 								  <th rowspan="2">Corpus</th>
 								  <th rowspan="2">Original datapoint</th>
-								  <th rowspan="2">Infringement Eval</th>
+								  <th rowspan="2">Risk Eval</th>
 								  <th colspan="2">Utility Eval</th>
 							  </tr>
 							  <tr>
@@ -394,10 +394,10 @@
 									<i class="icon-hotairballoon"></i>
 								</span>
 								<div class="feature-copy">
-									<h3>Infringement Risk Evaluation</h3>
+									<h3>Risk Evaluation</h3>
 										<ul>
-											<li>For <i>exact match</i> infringement, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
-											<li>For <i>near duplicate</i> infringement, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
+											<li>For <i>exact match</i>, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
+											<li>For <i>near duplicate</i>, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
 											</ul>
 
 								</div>
@@ -413,7 +413,7 @@
 									<h3>Utility Evaluation</h3>
 										<ul>
 											<li>For <i>blocklisted utility and in-domain utility</i>, we compute word level F1 score between the generated content and answer for QA tasks in news articles, and compute ROUGE score between the generated content and ground truth for summarization taks in books.</li>
-											<li>For <i>general utility</i>, we use MT-Bench(<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf">Zheng et al., 2024</a>) and MMLU(<a href="https://arxiv.org/pdf/2009.03300">Hendrycks et al., 2021</a>), two widely adopted benchmarks that evaluate the model's knowledge and reasoning abilities across a diverse range of subjects and tasks. </li>
+											<li>For <i>general utility</i>, we use MT-Bench (<a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf">Zheng et al., 2024</a>) and MMLU (<a href="https://arxiv.org/pdf/2009.03300">Hendrycks et al., 2021</a>), two widely adopted benchmarks that evaluate the model's knowledge and reasoning abilities across a diverse range of subjects and tasks. </li>
 										  </ul>
 									<!-- <p><a href="#">Learn More <i class="icon-arrow-right22"></i></a></p> -->
 								</div>
@@ -462,12 +462,12 @@
 						</figure>
 						<p>For the best experience, please view this interactive figure on a desktop.</p>
 						<p>
-							The figures above shows 4 key metrics in evaluating infringement risk for Llama2-7B-chat
+							The figures above shows 4 key metrics in evaluating regurgitation risk for Llama2-7B-chat
 							model, under RAG setting and memorization setting. Below are three key observations:
 						<ul>
 							<li>System Prompt and MemFree offer some mitigation but cannot
-								completely prevent infringement.</li>
-							<li>Unlearning and Top-\(k\) perturbation reduce infringement but
+								completely prevent undesirable regurgitation.</li>
+							<li>Unlearning and Top-\(k\) perturbation reduce similarity but
 								significantly compromises factual knowledge from the blocklisted content.</li>
 							<li>R-CAD is effective for takedown but comes at the cost of
 								efficiency and risk of utility drop.</li>
