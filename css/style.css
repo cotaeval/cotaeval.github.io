@@ -13,8 +13,8 @@
 body {
   font-family: "Inconsolata", Arial, sans-serif;
   font-weight: 400;
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 18px !important;
+  line-height: 1.7 !important;
   color: #333333;
   background: #fff;
 }
@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6, figure {
   background: #fff;
 }
 .fh5co-nav .top-menu {
-  padding: 28px 0;
+  padding: 28px 0 70px 0;
 }
 .fh5co-nav #fh5co-logo {
   font-size: 32px;
@@ -446,7 +446,7 @@ h1, h2, h3, h4, h5, h6, figure {
   font-weight: 400;
 }
 #fh5co-features .feature-left p {
-  font-size: 15px;
+  font-size: 18px;
 }
 #fh5co-features .feature-left p:last-child {
   margin-bottom: 0;
