@@ -399,6 +399,7 @@
 										<ul>
 											<li>For <i>exact match</i>, we evaluate: the length of character-level Longest Common Subsequence (LCS) \(\ell_{\mathsf{LCS}}^c\) between the generated text and the original text, and the length of word-level LCS \(\ell_{\mathsf{LCS}}^w\). </li>
 											<li>For <i>near duplicate</i>, we evaluate: ROUGE-1, ROUGE-L (<a href="https://aclanthology.org/W04-1013.pdf">Lin, 2004</a>), the length of word level Accumulated Common Subsequences (ACS) \(\ell_{\mathsf{ACS}}^w\), Levenshtein distance \(\ell_{\mathsf{Lev}}\) (<a href="https://nymity.ch/sybilhunting/pdf/Levenshtein1966a.pdf">Levenshtein, 1966</a>), and MinHash Similarity \(\xi_{\mathsf{MH}}\) (<a href="https://www.misserpirat.dk/main/docs/00000004.pdf">Broder, 1997</a>).</li>
+											<li>For <i>semantic similarity</i>, we evaluate the cosine similarity between the generated content and the blocklisted content using an <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">off-the-shelf embetting model</a> (\(\xi_{\mathsf{Sem}}\)).</li>
 											</ul>
 
 								</div>
