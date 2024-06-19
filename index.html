@@ -260,7 +260,7 @@
 			<div class="container">
 				<!-- <div class="row animate-box"> -->
 				<div class="fh5co-heading">
-					<h2 class="title is-3" style="font-size: 28px !important;">Copyright Infringement in LMs: Causes and Takedowns</h3>
+					<h2 class="title is-3" style="font-size: 28px !important;">Copyright and Language Models</h3>
 				</div>
 				<!-- </div> -->
 				<div class="row">
@@ -269,7 +269,7 @@
 							<h3  style="font-size: 24px">
 								<img src="images/paper/root-cause.png" alt="Icon" ,
 									style="vertical-align: middle; margin-right: 20px; width: 64px; height: 60px;">
-								Causes
+								Causes to Regurgitation of Copyrighted Contents
 							</h3>				
 								Recent litigation (<a href="https://casetext.com/case/tremblay-v-openai-inc-2">Tremblay
 								v. OpenAI, Inc</a>, <a
@@ -279,7 +279,7 @@
 								OpenAI, Inc.</a>, <a
 								href="https://www.courtlistener.com/docket/65669506/doe-1-v-github-inc/">DOE 1 v.
 								GitHub, Inc.</a>) has pointed to two scenarios where a language model deployment
-							might lead to infringement:
+							might lead to copyright concerns:
 							<ul>
 								<li>Copyrighted content is memorized within the model's parameters during training
 									(<i>Memorization</i>),
@@ -298,7 +298,7 @@
 								Our evaluation considers three types of takedown methods that intervene at different
 							stages of the language model:
 							<ul>
-								<li>Strategies that generally try to prevent infringement without specifying a
+								<li>Strategies that generally try to prevent the regurgitation of training data without specifying a
 									blocklist, including System Prompt and Top-\(k\) Perturbation (Adding Gaussian
 									noise to the logits in top-\(k\) sampling);</li>
 								<li>Methods that prevent the generation of blocklisted content during decoding,
@@ -334,7 +334,7 @@
 						</div>
 
 						<p>Our evaluation focuses on two prevalent types of text often involved in copyright
-							infringement cases: <i>news articles</i> and <i>books</i>. We divide the evaluation
+							related cases: <i>news articles</i> and <i>books</i>. We divide the evaluation
 							corpus into two parts: blocklisted content \(\mathcal{D}_{\text{blocklisted}}\), which
 							the model should avoid generating, and in-domain content
 							\(\mathcal{D}_{\text{in-domain}}\), which is from the same domain as
@@ -496,11 +496,7 @@
 								CoTaEval is an initial effort to evaluate copyright takedown methods, there is room
 								for improvement in future studies. For example, relatively small evaluation
 								datasets, lack of evaluation of the offline cost, and the need for more diverse
-								general utility evaluation. Furthermore, the field lacks a clear, quantitative
-								definition of copyright
-								infringement, as most cases need to be assessed on a case-by-case basis. Future work
-								could focus on a more detailed
-								exploration of legal standards for infringement.
+								general utility evaluation. Additionally, the metrics we provided only offer an indication of the extent to which the generated content may have copyright issues, rather than establishing a uniform measurement. Future work could focus on a more detailed exploration of legal standards for potential copyright concerns.
 							</p>
 						</div>
 					</div>
